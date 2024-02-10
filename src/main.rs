@@ -1,15 +1,26 @@
 extern crate sdl2;
 
 use anyhow::Result;
-use sdl2::{event::Event, keyboard::Keycode, pixels::Color, rect::Rect};
+use app::AppContext;
+use sdl2::{event::Event, keyboard::Keycode, pixels::Color};
 use std::time::Duration;
+
+mod app;
+
+const BAR_SEGMENT_IN_PXS: u32 = 60;
 
 pub fn main() -> Result<(), String> {
     let sdl_context = sdl2::init()?;
     let video_subsystem = sdl_context.video()?;
 
+    let mut context = AppContext::new();
+
     let window = video_subsystem
-        .window("algo-visual", 800, 600)
+        .window(
+            "algo-visual",
+            (context.vector.len() as u32) * BAR_SEGMENT_IN_PXS,
+            (context.vector.iter().max().unwrap() + 1) * BAR_SEGMENT_IN_PXS,
+        )
         .position_centered()
         .opengl()
         .build()
@@ -37,7 +48,6 @@ pub fn main() -> Result<(), String> {
         canvas.clear();
         canvas.present();
         std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 30));
-        // The rest of the game loop goes here...
     }
 
     Ok(())
