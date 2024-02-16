@@ -1,6 +1,6 @@
 use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas, video::Window};
 
-use super::BAR_SEGMENT_IN_PXS;
+use super::bar::{Bar, BAR_SEGMENT_IN_PXS};
 
 pub struct Renderer {
     canvas: WindowCanvas,
@@ -12,33 +12,25 @@ impl Renderer {
         Ok(Renderer { canvas })
     }
 
-    fn draw_bar(&mut self, x: i32, y: i32, screen_height: i32) -> Result<(), String> {
-        let bar_height = y as u32 * BAR_SEGMENT_IN_PXS;
-        let offset = screen_height - bar_height as i32;
-
+    fn draw_bar(&mut self, x: i32, bar: Bar) -> Result<(), String> {
         self.canvas.fill_rect(Rect::new(
-            x * BAR_SEGMENT_IN_PXS as i32,
-            y + offset,
+            x,
+            bar.y as i32 + bar.offset as i32,
             BAR_SEGMENT_IN_PXS,
-            y as u32 * BAR_SEGMENT_IN_PXS,
+            bar.bar_height,
         ))?;
         Ok(())
     }
 
-    pub fn draw(&mut self, vector: &Vec<u32>) -> Result<(), String> {
+    pub fn draw(&mut self, vector: &Vec<Bar>) -> Result<(), String> {
         self.canvas.set_draw_color(Color::BLACK);
         self.canvas.clear();
 
         self.canvas.set_draw_color(Color::WHITE);
 
         let mut index = 0;
-        let highest_value = vector.iter().max().unwrap();
-        for value in vector {
-            self.draw_bar(
-                index,
-                *value as i32,
-                *highest_value as i32 * BAR_SEGMENT_IN_PXS as i32,
-            )?;
+        for bar in vector {
+            self.draw_bar(index * BAR_SEGMENT_IN_PXS as i32, *bar)?;
             index += 1;
         }
 

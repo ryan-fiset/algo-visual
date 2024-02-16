@@ -1,7 +1,7 @@
 extern crate sdl2;
 
 use anyhow::Result;
-use app::{renderer::Renderer, AppContext, BAR_SEGMENT_IN_PXS};
+use app::{bar::BAR_SEGMENT_IN_PXS, renderer::Renderer, AppContext};
 use sdl2::{event::Event, keyboard::Keycode};
 use std::time::Duration;
 
