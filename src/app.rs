@@ -1,12 +1,15 @@
 pub use anyhow;
+use clap::Parser;
 
 mod algorithm;
 pub mod bar;
+mod cli;
 pub mod renderer;
 
 use algorithm::Algorithm;
-
-use self::bar::Bar;
+use bar::Bar;
+use cli::Args;
+use rand::seq::SliceRandom;
 
 pub enum AppState {
     Running,
@@ -21,23 +24,20 @@ pub struct AppContext {
 
 impl AppContext {
     pub fn new() -> Self {
+        let args = Args::parse();
+
+        let mut vector: Vec<Bar> = Vec::new();
+
+        for i in 1..=args.vec_size {
+            vector.push(Bar::new(i))
+        }
+
+        let mut rng = rand::thread_rng();
+        vector.shuffle(&mut rng);
+
         Self {
             algorithm: Algorithm::BubbleSort, // TODO: Make this modifiable via argument to fn
-            vector: vec![
-                Bar::new(6),
-                Bar::new(13),
-                Bar::new(3),
-                Bar::new(5),
-                Bar::new(12),
-                Bar::new(7),
-                Bar::new(1),
-                Bar::new(4),
-                Bar::new(2),
-                Bar::new(8),
-                Bar::new(10),
-                Bar::new(11),
-                Bar::new(9),
-            ], // TODO: Remove magic numbers
+            vector,
             state: AppState::Suspended,
         }
     }
