@@ -1,7 +1,7 @@
 extern crate sdl2;
 
 use anyhow::Result;
-use app::{bar::BAR_SEGMENT_IN_PXS, renderer::Renderer, AppContext};
+use app::{renderer::Renderer, AppContext};
 use sdl2::{event::Event, keyboard::Keycode};
 use std::time::Duration;
 
@@ -14,15 +14,13 @@ pub fn main() -> Result<(), String> {
     let context = AppContext::new();
 
     let window = video_subsystem
-        .window(
-            "algo-visual",
-            13 * BAR_SEGMENT_IN_PXS,
-            13 * BAR_SEGMENT_IN_PXS,
-        )
+        .window("algo-visual", context.screen_height, context.screen_height)
         .position_centered()
         .opengl()
         .build()
         .map_err(|e| e.to_string())?;
+
+    println!("{}", context.screen_height);
 
     // let mut canvas = window.into_canvas().build().map_err(|e| e.to_string())?;
     let mut renderer = Renderer::new(window)?;

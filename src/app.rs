@@ -20,6 +20,7 @@ pub struct AppContext {
     pub algorithm: Algorithm,
     pub vector: Vec<Bar>,
     pub state: AppState,
+    pub screen_height: u32,
 }
 
 impl AppContext {
@@ -39,6 +40,7 @@ impl AppContext {
             algorithm: Algorithm::BubbleSort, // TODO: Make this modifiable via argument to fn
             vector,
             state: AppState::Suspended,
+            screen_height: args.bar_segment * args.vec_size,
         }
     }
 }

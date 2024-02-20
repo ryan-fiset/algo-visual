@@ -1,6 +1,6 @@
 use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas, video::Window};
 
-use super::bar::{Bar, BAR_SEGMENT_IN_PXS};
+use super::bar::Bar;
 
 pub struct Renderer {
     canvas: WindowCanvas,
@@ -15,8 +15,8 @@ impl Renderer {
     fn draw_bar(&mut self, x: i32, bar: Bar) -> Result<(), String> {
         self.canvas.fill_rect(Rect::new(
             x,
-            bar.y as i32 + bar.offset as i32,
-            BAR_SEGMENT_IN_PXS,
+            bar.offset as i32,
+            bar.bar_segment,
             bar.bar_height,
         ))?;
         Ok(())
@@ -30,7 +30,7 @@ impl Renderer {
 
         let mut index = 0;
         for bar in vector {
-            self.draw_bar(index * BAR_SEGMENT_IN_PXS as i32, *bar)?;
+            self.draw_bar(index * bar.bar_segment as i32, *bar)?;
             index += 1;
         }
 
