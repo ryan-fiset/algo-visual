@@ -13,12 +13,8 @@ impl Renderer {
     }
 
     fn draw_bar(&mut self, x: i32, bar: Bar) -> Result<(), String> {
-        self.canvas.fill_rect(Rect::new(
-            x,
-            bar.offset as i32,
-            bar.bar_segment,
-            bar.bar_height,
-        ))?;
+        let bar_rect = Rect::new(x, bar.offset as i32, bar.bar_segment, bar.bar_height);
+        self.canvas.fill_rect(bar_rect)?;
         Ok(())
     }
 
