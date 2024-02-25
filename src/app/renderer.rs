@@ -1,6 +1,7 @@
+use anyhow::Result;
 use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas, video::Window};
 
-use super::bar::Bar;
+use super::{bar::Bar, AppContext};
 
 pub struct Renderer {
     canvas: WindowCanvas,
@@ -12,23 +13,35 @@ impl Renderer {
         Ok(Renderer { canvas })
     }
 
-    fn draw_bar(&mut self, x: i32, bar: Bar) -> Result<(), String> {
-        let bar_rect = Rect::new(x, bar.offset as i32, bar.bar_segment, bar.bar_height);
+    fn draw_bar(&mut self, x: u32, bar: Bar) -> Result<(), String> {
+        let bar_rect = Rect::new(
+            x.try_into().unwrap(),
+            bar.offset as i32,
+            bar.bar_segment,
+            bar.bar_height,
+        );
         self.canvas.fill_rect(bar_rect)?;
         Ok(())
     }
 
-    pub fn draw(&mut self, vector: &Vec<Bar>) -> Result<(), String> {
+    fn draw_bars(&mut self, context: &AppContext) -> Result<(), String> {
+        self.canvas.set_draw_color(Color::WHITE);
+
+        let mut index: u32 = 0;
+        for bar in &context.vector {
+            self.draw_bar(index * context.bar_segment, *bar)?;
+            index += 1;
+        }
+
+        Ok(())
+    }
+
+    pub fn draw(&mut self, context: &AppContext) -> Result<(), String> {
+        // Set background
         self.canvas.set_draw_color(Color::BLACK);
         self.canvas.clear();
 
-        self.canvas.set_draw_color(Color::WHITE);
-
-        let mut index = 0;
-        for bar in vector {
-            self.draw_bar(index * bar.bar_segment as i32, *bar)?;
-            index += 1;
-        }
+        self.draw_bars(&context)?;
 
         self.canvas.present();
 

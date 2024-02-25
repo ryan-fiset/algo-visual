@@ -1,4 +1,3 @@
-pub use anyhow;
 use clap::Parser;
 
 mod algorithm;
@@ -21,6 +20,7 @@ pub struct AppContext {
     pub vector: Vec<Bar>,
     pub state: AppState,
     pub screen_height: u32,
+    pub bar_segment: u32,
 }
 
 impl AppContext {
@@ -41,6 +41,7 @@ impl AppContext {
             vector,
             state: AppState::Suspended,
             screen_height: args.bar_segment * args.vec_size,
+            bar_segment: args.bar_segment,
         }
     }
 }

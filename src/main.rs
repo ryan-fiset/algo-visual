@@ -22,7 +22,6 @@ pub fn main() -> Result<(), String> {
 
     println!("{}", context.screen_height);
 
-    // let mut canvas = window.into_canvas().build().map_err(|e| e.to_string())?;
     let mut renderer = Renderer::new(window)?;
 
     let mut event_pump = sdl_context.event_pump()?;
@@ -40,7 +39,7 @@ pub fn main() -> Result<(), String> {
         }
 
         std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 30));
-        renderer.draw(&context.vector)?;
+        renderer.draw(&context)?;
     }
 
     Ok(())
