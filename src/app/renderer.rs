@@ -1,5 +1,3 @@
-use std::time::Duration;
-
 use anyhow::Result;
 use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas, video::Window};
 
