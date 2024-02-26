@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use clap::Parser;
 use rand::seq::SliceRandom;
 
@@ -40,7 +42,7 @@ impl AppContext {
         vector.shuffle(&mut rng);
 
         Self {
-            algorithm: Algorithm::BubbleSort, // TODO: Make this modifiable via argument to fn
+            algorithm: Algorithm::from_str(&(args.algo).to_uppercase()).unwrap(),
             vector,
             state: AppState::Suspended,
             screen_height: args.bar_segment * args.vec_size,

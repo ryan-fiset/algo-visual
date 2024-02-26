@@ -6,4 +6,6 @@ pub struct Args {
     pub vec_size: u32,
     #[arg(short, default_value_t = 50)]
     pub bar_segment: u32,
+    #[arg(short, default_value_t = ("bubblesort".to_string()))]
+    pub algo: String,
 }
