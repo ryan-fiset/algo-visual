@@ -13,7 +13,6 @@ use bar::Bar;
 use cli::Args;
 
 use crate::app::algorithm::run_algo;
-
 #[derive(PartialEq, Debug)]
 pub enum AppState {
     Running,
@@ -65,5 +64,9 @@ impl AppContext {
         run_algo(self);
 
         println!("Running");
+    }
+
+    pub fn is_sorted(&self) -> bool {
+        self.vector.windows(2).all(|w| w[0] < w[1])
     }
 }
