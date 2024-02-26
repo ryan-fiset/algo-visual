@@ -1,4 +1,5 @@
 use clap::Parser;
+use rand::seq::SliceRandom;
 
 mod algorithm;
 pub mod bar;
@@ -8,8 +9,10 @@ pub mod renderer;
 use algorithm::Algorithm;
 use bar::Bar;
 use cli::Args;
-use rand::seq::SliceRandom;
 
+use crate::app::algorithm::run_algo;
+
+#[derive(PartialEq, Debug)]
 pub enum AppState {
     Running,
     Suspended,
@@ -43,5 +46,22 @@ impl AppContext {
             screen_height: args.bar_segment * args.vec_size,
             bar_segment: args.bar_segment,
         }
+    }
+
+    pub fn change_state(&mut self) {
+        self.state = match self.state {
+            AppState::Running => AppState::Suspended,
+            AppState::Suspended => AppState::Running,
+        };
+    }
+
+    pub fn next_tick(&mut self) {
+        if let AppState::Suspended = self.state {
+            return;
+        }
+
+        run_algo(self);
+
+        println!("Running");
     }
 }
