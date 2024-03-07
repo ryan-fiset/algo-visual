@@ -5,6 +5,8 @@ use app::{renderer::Renderer, AppContext};
 use sdl2::{event::Event, keyboard::Keycode};
 use std::time::Duration;
 
+use crate::app::AppState;
+
 mod app;
 
 pub fn main() -> Result<(), String> {
@@ -42,7 +44,7 @@ pub fn main() -> Result<(), String> {
             }
         }
 
-        std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 30));
+        std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 144));
 
         frame_counter += 1;
         if frame_counter % 10 == 0 {
@@ -51,6 +53,9 @@ pub fn main() -> Result<(), String> {
         }
 
         renderer.draw(&context)?;
+        if context.is_sorted() {
+            context.state = AppState::Suspended;
+        }
     }
 
     Ok(())

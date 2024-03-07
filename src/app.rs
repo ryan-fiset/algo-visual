@@ -58,6 +58,7 @@ impl AppContext {
 
     pub fn next_tick(&mut self) {
         if let AppState::Suspended = self.state {
+            println!("Paused");
             return;
         }
 

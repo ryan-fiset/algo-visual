@@ -1,16 +1,19 @@
+use rand::seq::SliceRandom;
 use std::str::FromStr;
 
-use super::AppContext;
+use super::{bar::Bar, AppContext};
 
 pub enum Algorithm {
     BubbleSort,
     QuickSort,
+    BogoSort,
 }
 
 pub fn run_algo(context: &mut AppContext) {
     match context.algorithm {
         Algorithm::BubbleSort => bubble_sort(context),
         Algorithm::QuickSort => todo!(),
+        Algorithm::BogoSort => bogo_sort(context),
     }
 }
 
@@ -39,6 +42,11 @@ fn bubble_sort(context: &mut AppContext) {
     }
 }
 
+fn bogo_sort(context: &mut AppContext) {
+    let mut rng = rand::thread_rng();
+    context.vector.shuffle(&mut rng);
+}
+
 impl FromStr for Algorithm {
     type Err = ();
 
@@ -46,6 +54,7 @@ impl FromStr for Algorithm {
         match s {
             "BUBBLESORT" => Ok(Algorithm::BubbleSort),
             "QUICKSORT" => Ok(Algorithm::QuickSort),
+            "BOGOSORT" => Ok(Algorithm::BogoSort),
             _ => Err(()),
         }
     }
